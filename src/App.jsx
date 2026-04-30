@@ -16,7 +16,6 @@ import { onAuthStateChanged } from 'firebase/auth';
 function ScrollToTop() {
   const { pathname } = useLocation();
   useEffect(() => {
-    // Force immediate scroll to top on any route change
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
   }, [pathname]);
   return null;
@@ -24,8 +23,9 @@ function ScrollToTop() {
 
 const ProtectedRoute = ({ children, user, loading }) => {
   if (loading) return (
-    <div className="min-h-screen flex items-center justify-center bg-gray-50">
-      <div className="w-12 h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
+    <div className="min-h-screen flex items-center justify-center bg-gray-50 px-6">
+      {/* Spinner mobil qurilmalarda ham markazda va mos o'lchamda bo'lishi uchun */}
+      <div className="w-10 h-10 md:w-12 md:h-12 border-4 border-indigo-600 border-t-transparent rounded-full animate-spin"></div>
     </div>
   );
   if (!user) return <Navigate to="/login" replace />;
@@ -39,9 +39,9 @@ function AppContent({ products, user, loading, onLogin, onLogout, updateProducts
   const hideHeaderFooter = isLoginPage || isAdminPage;
 
   return (
-    <div className="min-h-screen flex flex-col bg-white">
+    <div className="min-h-screen flex flex-col bg-white overflow-x-hidden">
       {!hideHeaderFooter && <Header />}
-      <main className="flex-grow">
+      <main className="flex-grow w-full">
         <Routes>
           <Route path="/" element={<HomePage products={products} />} />
           <Route path="/product/:id" element={<ProductPage products={products} />} />
