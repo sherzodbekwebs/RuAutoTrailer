@@ -3,8 +3,9 @@ import { Phone } from 'lucide-react';
 
 export default function Header() {
   return (
-    <header className="h-20 border-b border-slate-100 flex items-center flex-shrink-0 bg-white/80 backdrop-blur-md sticky top-0 z-50">
-      <div className="max-w-[1600px] mx-auto w-full px-6 md:px-10 flex items-center justify-between">
+    // 'fixed' ishlatildi, 'w-full', 'left-0', 'right-0' bilan butun kenglik qoplandi
+    <header className="fixed top-0 left-0 right-0 h-20 border-b border-slate-100 flex items-center bg-white/90 backdrop-blur-md z-[100]">
+      <div className="max-w-[1300px] mx-auto w-full px-6 md:px-10 flex items-center justify-between">
 
         {/* Chap taraf: Logo va Navigatsiya */}
         <div className="flex items-center gap-8 md:gap-14">
@@ -41,7 +42,7 @@ export default function Header() {
             </p>
           </div>
 
-          {/* Mobil uchun telefon knopkasi (faqat ikona) */}
+          {/* Mobil uchun telefon knopkasi */}
           <a
             href="tel:+79014010001"
             className="sm:hidden w-10 h-10 bg-[#00529B] rounded-xl flex items-center justify-center text-white shadow-lg shadow-blue-200"
