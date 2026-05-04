@@ -1,9 +1,10 @@
 import { Link, useParams } from 'react-router-dom';
-import { motion } from 'motion/react';
-import { ArrowLeft, Phone, Info, Truck, Settings, Package, History } from 'lucide-react';
-import { useState } from 'react';
+import { motion } from 'framer-motion'; // motion/react o'rniga framer-motion ishlatish tavsiya etiladi
+import { ArrowLeft, Phone, Truck, Settings, Package, History, Loader2 } from 'lucide-react';
+import { useState, useMemo } from 'react';
 import SEO from '../components/SEO.jsx';
 
+// Xususiyatlar bo'limi komponenti
 const SpecSection = ({ title, icon: Icon, specs, color }) => {
   if (!specs || specs.length === 0) return null;
   return (
@@ -29,14 +30,40 @@ const SpecSection = ({ title, icon: Icon, specs, color }) => {
 
 export default function ProductPage({ products }) {
   const { id } = useParams();
-  const product = products.find(p => p.id === id);
   const [activeImage, setActiveImage] = useState(null);
 
+  // 1. Mahsulotlarni sequence bo'yicha tartiblash (memoized holatda)
+  const sortedProducts = useMemo(() => {
+    if (!products) return [];
+    return [...products].sort((a, b) => {
+      const seqA = parseInt(a.sequence) || 0;
+      const seqB = parseInt(b.sequence) || 0;
+      return seqA - seqB;
+    });
+  }, [products]);
+
+  // 2. Tartiblangan ro'yxatdan kerakli mahsulotni topish
+  const product = useMemo(() => {
+    return sortedProducts.find(p => p.id === id);
+  }, [sortedProducts, id]);
+
+  // Yuklanish holati (agar mahsulotlar hali kelmagan bo'lsa)
+  if (!products || products.length === 0) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <Loader2 className="w-10 h-10 animate-spin text-accent-blue" />
+      </div>
+    );
+  }
+
+  // Mahsulot topilmagan holati
   if (!product) {
     return (
-      <div className="py-20 text-center px-6">
-        <h2 className="text-2xl font-bold">Продукт не найден</h2>
-        <Link to="/" className="text-accent-blue underline mt-4 inline-block">Вернуться на главную</Link>
+      <div className="py-20 text-center px-6 min-h-screen flex flex-col items-center justify-center">
+        <h2 className="text-2xl font-black text-gray-900 mb-4">Продукт не найден</h2>
+        <Link to="/" className="bg-gray-900 text-white px-8 py-3 rounded-2xl font-bold hover:bg-accent-blue transition-colors">
+          Вернуться на главную
+        </Link>
       </div>
     );
   }
@@ -52,10 +79,11 @@ export default function ProductPage({ products }) {
         image={product.image}
       />
       
+      {/* Banner qismi */}
       {product.banner && (
         <div className="w-full h-32 md:h-64 overflow-hidden relative">
           <img src={product.banner} alt="Banner" className="w-full h-full object-cover" />
-          <div className="absolute inset-0 bg-black/30"></div>
+          <div className="absolute inset-0 bg-black/30 backdrop-blur-[2px]"></div>
         </div>
       )}
 
@@ -65,32 +93,38 @@ export default function ProductPage({ products }) {
           Назад в каталог
         </Link>
 
-        {/* Product Title & Short Specs */}
+        {/* Product Title */}
         <div className="mb-8 md:mb-12">
-          <span className="text-brand-blue font-black text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3 md:mb-4 block">
-            {product.brand || 'РуАвто Трейлер'}
+          <span className="text-accent-blue font-black text-[10px] md:text-xs uppercase tracking-[0.2em] mb-3 md:mb-4 block">
+            {product.brand || 'Официальный дилер'}
           </span>
-          <h1 className="text-2xl sm:text-3xl md:text-5xl font-black text-gray-900 leading-tight max-w-4xl">
+          <h1 className="text-3xl sm:text-4xl md:text-6xl font-black text-gray-900 leading-tight max-w-4xl tracking-tighter">
             {product.name}
           </h1>
         </div>
 
-        {/* Hero Section */}
+        {/* Hero Section: Rasm va Asosiy ma'lumotlar */}
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-10 md:gap-16 mb-16 md:mb-24">
           <div className="space-y-4 md:space-y-6">
             <motion.div
-              layoutId={`image-${product.id}`}
-              className="rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl shadow-gray-200 bg-gray-50 aspect-[4/3] border border-gray-100 flex items-center justify-center p-4 md:p-6"
+              initial={{ opacity: 0, y: 20 }}
+              animate={{ opacity: 1, y: 0 }}
+              className="rounded-[30px] md:rounded-[40px] overflow-hidden shadow-2xl shadow-gray-100 bg-gray-50 aspect-[4/3] border border-gray-100 flex items-center justify-center p-4 md:p-8"
             >
-              <img src={currentImage} alt={product.name} className="w-full h-full object-contain transition-transform duration-700 hover:scale-105" />
+              <img 
+                src={currentImage} 
+                alt={product.name} 
+                className="w-full h-full object-contain mix-blend-multiply hover:scale-105 transition-transform duration-700" 
+              />
             </motion.div>
 
+            {/* Galereya */}
             <div className="grid grid-cols-4 sm:grid-cols-5 md:grid-cols-6 gap-2 md:gap-4">
               {gallery.map((img, idx) => (
                 <button
                   key={idx}
                   onClick={() => setActiveImage(img)}
-                  className={`rounded-xl md:rounded-2xl overflow-hidden bg-gray-100 aspect-square border-2 transition-all ${currentImage === img ? 'border-brand-blue scale-95 shadow-lg' : 'border-transparent opacity-70 hover:opacity-100'}`}
+                  className={`rounded-xl md:rounded-2xl overflow-hidden bg-gray-50 aspect-square border-2 transition-all ${currentImage === img ? 'border-accent-blue scale-95 shadow-md' : 'border-transparent opacity-60 hover:opacity-100'}`}
                 >
                   <img src={img} alt={`Gallery ${idx}`} className="w-full h-full object-cover" />
                 </button>
@@ -98,6 +132,7 @@ export default function ProductPage({ products }) {
             </div>
           </div>
 
+          {/* O'ng tomon: Tavsif va Tugmalar */}
           <div className="flex flex-col justify-center">
             <p className="text-gray-500 text-base md:text-lg leading-relaxed mb-8 md:mb-10 font-medium">
               {product.description}
@@ -106,10 +141,10 @@ export default function ProductPage({ products }) {
             <div className="bg-gray-50 p-6 md:p-10 rounded-[30px] md:rounded-[40px] flex flex-col sm:flex-row items-center justify-between border border-gray-100 mb-6 md:mb-10 gap-6 md:gap-8">
               <div className="text-center sm:text-left">
                 <p className="text-[10px] font-black text-gray-400 uppercase tracking-widest mb-2">Ориентировочная стоимость</p>
-                <p className="text-3xl md:text-4xl font-black text-brand-blue tracking-tight">{product.price}</p>
+                <p className="text-3xl md:text-4xl font-black text-accent-blue tracking-tight">{product.price}</p>
               </div>
-              <a href="tel:+79014010001" className="w-full sm:w-auto bg-brand-blue text-white px-8 py-4 md:py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-brand-blue/90 transition-all shadow-xl shadow-brand-blue/20 group font-black uppercase tracking-widest text-xs md:text-sm">
-                <Phone size={18} md:size={20} className="group-hover:rotate-12 transition-transform" />
+              <a href="tel:+79014010001" className="w-full sm:w-auto bg-gray-900 text-white px-8 py-4 md:py-5 rounded-2xl flex items-center justify-center gap-3 hover:bg-accent-blue transition-all shadow-xl group font-black uppercase tracking-widest text-xs">
+                <Phone size={18} className="group-hover:rotate-12 transition-transform" />
                 Связаться
               </a>
             </div>
@@ -120,7 +155,7 @@ export default function ProductPage({ products }) {
           </div>
         </div>
 
-        {/* Technical Data Sections */}
+        {/* Texnik xarakteristikalar */}
         <div className="space-y-8 md:space-y-12">
           <h2 className="text-xl md:text-2xl font-black text-gray-900 uppercase tracking-tight flex items-center gap-4">
             Технические данные
@@ -155,11 +190,11 @@ export default function ProductPage({ products }) {
           </div>
         </div>
 
-        {/* Extra Description */}
+        {/* Batafsil tavsif (agar uzun bo'lsa) */}
         {product.description?.length > 500 && (
-          <div className="mt-16 md:mt-24 max-w-4xl">
-            <h3 className="text-lg md:text-xl font-black text-gray-900 uppercase tracking-tight mb-6 md:mb-8">Подробное описание</h3>
-            <div className="prose prose-sm md:prose-base prose-gray max-w-none text-gray-500 font-medium leading-relaxed">
+          <div className="mt-16 md:mt-24 max-w-4xl p-8 bg-gray-50 rounded-[40px] border border-gray-100">
+            <h3 className="text-lg md:text-xl font-black text-gray-900 uppercase tracking-tight mb-6">Подробное описание</h3>
+            <div className="prose prose-gray max-w-none text-gray-500 font-medium leading-relaxed">
               {product.description}
             </div>
           </div>

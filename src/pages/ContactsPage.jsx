@@ -47,8 +47,8 @@ export default function ContactsPage() {
               <MapPin className="text-accent-blue" size={20} md:size={24} />
             </div>
             <h3 className="text-[10px] md:text-sm font-black uppercase tracking-widest text-gray-400 mb-1 md:mb-2">Адрес офиса</h3>
-            <p className="text-base md:text-lg font-black text-gray-900">г. Москва, ул. Автомобильная, д. 12</p>
-            <p className="text-xs md:text-sm text-gray-500 mt-1">Бизнес-центр "Драйв", офис 402</p>
+            <p className="text-base md:text-lg font-black text-gray-900">601446, Владимирская область, м.-н Вязниковский, г.п. город Вязники, г.</p>
+            <p className="text-xs md:text-sm text-gray-500 mt-1"> Вязники, ул. Железнодорожная, д. 13, помещ. 414</p>
           </div>
         </div>
 
@@ -82,8 +82,8 @@ export default function ContactsPage() {
           {/* Working Hours */}
           <div className="mt-6 md:mt-8 flex flex-col sm:flex-row items-start sm:items-center gap-2 text-gray-500 text-[11px] md:text-sm font-medium">
             <div className="flex items-center gap-2">
-                <Clock size={16} className="text-accent-blue" />
-                <span className="font-bold uppercase tracking-tight">Режим работы:</span>
+              <Clock size={16} className="text-accent-blue" />
+              <span className="font-bold uppercase tracking-tight">Режим работы:</span>
             </div>
             <span className="ml-6 sm:ml-0">Пн-Пт 9:00 - 18:00, Сб 10:00 - 15:00</span>
           </div>
