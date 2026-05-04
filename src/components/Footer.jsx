@@ -4,7 +4,7 @@ export default function Footer() {
       <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center md:items-start gap-10 text-center md:text-left">
         {/* Brend va Tavsif */}
         <div>
-          <h4 className="text-lg font-black text-brand-blue mb-4">РуАвто ТРЕЙЛЕР</h4>
+          <h4 className="text-lg font-black text-brand-blue mb-4">РуАвто Трейлер</h4>
           <p className="text-sm text-gray-500 max-w-sm mx-auto md:mx-0">
             Продажа качественных полуприцепов в России. Надежная техника для вашего бизнеса.
           </p>
@@ -25,7 +25,7 @@ export default function Footer() {
             <ul className="text-sm text-gray-500 space-y-2">
               <li>+7 (901) 401-00-01</li>
               <li>info@ruautotrailer.ru</li>
-              <li className="max-w-[200px] mx-auto md:mx-0">Владимирская область, м.-н Вязниковский, г.п. город Вязники, г.</li>
+              <li className="max-w-[200px] mx-auto md:mx-0">Владимирская область, город Вязники</li>
             </ul>
           </div>
         </div>

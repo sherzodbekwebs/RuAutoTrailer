@@ -5,12 +5,12 @@ export default function Header() {
   return (
     <header className="fixed top-0 left-0 right-0 h-16 md:h-20 border-b border-slate-100 flex items-center bg-white/95 backdrop-blur-md z-[100]">
       <div className="max-w-[1300px] mx-auto w-full px-4 md:px-10 flex items-center justify-between">
-        
+
         {/* Chap taraf: Logo va Navigatsiya */}
         <div className="flex items-center gap-4 md:gap-14">
           <Link to="/" className="group flex flex-col">
             <span className="text-lg md:text-2xl font-black tracking-tighter text-[#00529B] leading-none">
-              РУАВТО <span className="text-[#1E3A5F]">ТРЕЙЛЕР</span>
+              РуАвто <span className="text-[#1E3A5F]">Трейлер</span>
             </span>
           </Link>
 
@@ -27,7 +27,7 @@ export default function Header() {
 
         {/* O'ng taraf: Aloqa */}
         <div className="flex items-center gap-3 md:gap-6">
-          
+
           {/* Telefon raqami: Desktop va Planshet uchun */}
           <div className="text-right hidden sm:block">
             <a
@@ -54,8 +54,8 @@ export default function Header() {
           </a>
 
           {/* Mobil uchun kichik "Контакты" linki (faqat telefonda ko'rinadi) */}
-          <Link 
-            to="/contacts" 
+          <Link
+            to="/contacts"
             className="md:hidden text-[10px] font-black uppercase text-[#00529B] border border-[#00529B]/20 px-2 py-1 rounded"
           >
             Контакты
