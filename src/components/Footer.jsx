@@ -25,7 +25,7 @@ export default function Footer() {
             <ul className="text-sm text-gray-500 space-y-2">
               <li>+7 (901) 401-00-01</li>
               <li>info@ruautotrailer.ru</li>
-              <li className="max-w-[200px] mx-auto md:mx-0">Москва, ул. Автомобильная, д. 12</li>
+              <li className="max-w-[200px] mx-auto md:mx-0">Владимирская область, м.-н Вязниковский, г.п. город Вязники, г.</li>
             </ul>
           </div>
         </div>
